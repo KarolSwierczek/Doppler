@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 194269515}
   - component: {fileID: 194269514}
   - component: {fileID: 194269513}
+  - component: {fileID: 194269516}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -148,7 +149,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.095
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -230,6 +231,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &194269516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 194269512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6bb341e82a656a4c87ea28635e58aa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gain: 0.5
+  frequency: 440
 --- !u!1 &489421846
 GameObject:
   m_ObjectHideFlags: 0
