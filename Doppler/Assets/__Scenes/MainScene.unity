@@ -116,9 +116,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 194269515}
-  - component: {fileID: 194269514}
   - component: {fileID: 194269513}
-  - component: {fileID: 194269516}
+  - component: {fileID: 194269514}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -134,10 +133,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 194269512}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98ca047da356aad42ad3dca5605d7d5b, type: 3}
+  m_Script: {fileID: 11500000, guid: f5ef2dfccb0a1324abbd338458cf95b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Player: {fileID: 0}
+  _Clip: {fileID: 8300000, guid: 7ae1af002583b3e4cbda79479b98676f, type: 3}
+  _Name: Sine
 --- !u!82 &194269514
 AudioSource:
   m_ObjectHideFlags: 0
@@ -149,7 +149,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.095
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -229,21 +229,33 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &194269516
+--- !u!1 &326841717 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
+  m_PrefabInternal: {fileID: 916991529}
+--- !u!114 &326841718
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 194269512}
+  m_GameObject: {fileID: 326841717}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6bb341e82a656a4c87ea28635e58aa3, type: 3}
+  m_Script: {fileID: 11500000, guid: ee6ab489cd4a180419f2e0a2fa4a3f72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _Source: {fileID: 194269513}
+  _MaxVelocity: 10
   gain: 0.5
-  frequency: 440
+--- !u!81 &326841722
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 326841717}
+  m_Enabled: 1
 --- !u!1 &489421846
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +419,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
       propertyPath: m_LocalRotation.x
@@ -447,6 +459,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
       propertyPath: m_WalkSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
+      propertyPath: m_Acceleration
       value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents:
@@ -715,7 +731,6 @@ GameObject:
   - component: {fileID: 1438417412}
   - component: {fileID: 1438417411}
   - component: {fileID: 1438417410}
-  - component: {fileID: 1438417414}
   m_Layer: 0
   m_Name: Source
   m_TagString: Untagged
@@ -785,21 +800,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1438417414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1438417409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5ef2dfccb0a1324abbd338458cf95b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Clip: {fileID: 0}
-  _Name: 
 --- !u!1 &1504527942
 GameObject:
   m_ObjectHideFlags: 0
