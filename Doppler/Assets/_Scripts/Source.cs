@@ -5,28 +5,39 @@ public class Source : MonoBehaviour {
     #region Public Methods
     public float[] GetClipFragment(int startSample, int endSample)
     {
-        var clipLength = (int)(_Clip.length * _Clip.frequency);
+        //actual indexes requested
+        var start = ClipLength - startSample;
+        var end = ClipLength - endSample;
 
-        //if the starting sample number is grater than total clip length,
-        //return an empty array
-        if(startSample > clipLength)
+        if(start < 0 || end < 0)
         {
-            Debug.Log("Starting sample number greater than total clip length");
-            return new float[0];
+            throw new System.ArgumentOutOfRangeException("requested samples have negative indexes, which means the player is too far from the source");
         }
 
-        //if the end sample number is grater than total clip lenth,
-        //set the endSample to the last sample in the clip
-        if(endSample > clipLength)
+        var length = end - start;
+        var sign = length < 0 ? -1 : 1;
+        length = length * sign;
+        
+        var result = new float[length];
+       
+        for(var i = 0; i < length; i++)
         {
-            Debug.Log("End sample number greater than total clip length");
-            endSample = clipLength - 1;
+            result[i] = _ClipArray[start + i * sign];
         }
 
-        var numOfSamples = endSample - startSample;
-        var result = new float[numOfSamples];
-        _Clip.GetData(result, startSample);
         return result;
+    }
+
+    public float GetSampleAtDist(int distance)
+    {
+        var index = ClipLength - distance;
+
+        if (index < 0 || index > ClipLength)
+        {
+            throw new System.ArgumentOutOfRangeException();
+        }
+
+        return _ClipArray[index];
     }
     #endregion Public Methods
 
@@ -45,6 +56,15 @@ public class Source : MonoBehaviour {
         {
             _Name = _Clip.name;
         }
+
+        ClipLength = (int)(_Clip.length * _Clip.frequency);
+        _ClipArray = new float[ClipLength];
+        _Clip.GetData(_ClipArray, 0);
     }
     #endregion Unity Methods
+
+    #region Private Variables
+    public int ClipLength;
+    private float[] _ClipArray;
+    #endregion Private Variables
 }
