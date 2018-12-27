@@ -1,20 +1,20 @@
 ﻿using UnityEngine;
 
 public class Source : MonoBehaviour {
+    #region Public Variables
+    [HideInInspector] public int ClipLength;
+    #endregion Public Variables
 
     #region Public Methods
     public float[] GetClipFragment(int startSample, int endSample)
     {
-        //actual indexes requested
-        var start = ClipLength - startSample;
-        var end = ClipLength - endSample;
 
-        if(start < 0 || end < 0)
+        if(startSample < 0 || endSample < 0)
         {
             throw new System.ArgumentOutOfRangeException("requested samples have negative indexes, which means the player is too far from the source");
         }
 
-        var length = end - start;
+        var length = endSample - startSample;
         var sign = length < 0 ? -1 : 1;
         length = length * sign;
         
@@ -22,16 +22,14 @@ public class Source : MonoBehaviour {
        
         for(var i = 0; i < length; i++)
         {
-            result[i] = _ClipArray[start + i * sign];
+            result[i] = _ClipArray[startSample + i * sign];
         }
 
         return result;
     }
 
-    public float GetSampleAtDist(int distance)
+    public float GetSample(int index)
     {
-        var index = ClipLength - distance;
-
         if (index < 0 || index > ClipLength)
         {
             throw new System.ArgumentOutOfRangeException();
@@ -42,21 +40,12 @@ public class Source : MonoBehaviour {
     #endregion Public Methods
 
     #region Inspector Variables
-    [SerializeField]
-    private AudioClip _Clip;
-
-    [SerializeField]
-    private string _Name = null;
+    [SerializeField] private AudioClip _Clip;
     #endregion Inspector Variables
 
     #region Unity Methods
     private void Start()
     {
-        if(_Name == null)
-        {
-            _Name = _Clip.name;
-        }
-
         ClipLength = (int)(_Clip.length * _Clip.frequency);
         _ClipArray = new float[ClipLength];
         _Clip.GetData(_ClipArray, 0);
@@ -64,7 +53,6 @@ public class Source : MonoBehaviour {
     #endregion Unity Methods
 
     #region Private Variables
-    public int ClipLength;
     private float[] _ClipArray;
     #endregion Private Variables
 }

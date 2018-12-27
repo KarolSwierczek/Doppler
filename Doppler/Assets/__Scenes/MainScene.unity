@@ -141,9 +141,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ef2dfccb0a1324abbd338458cf95b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Clip: {fileID: 8300000, guid: 6cac00e9f91ffb441a95609d0a304e67, type: 3}
-  _Name: Sine
   ClipLength: 0
+  _Clip: {fileID: 8300000, guid: 6cac00e9f91ffb441a95609d0a304e67, type: 3}
 --- !u!82 &194269514
 AudioSource:
   m_ObjectHideFlags: 0
@@ -272,6 +271,7 @@ MonoBehaviour:
   _Logger: {fileID: 326841719}
   _MaxVelocity: 6
   gain: 0.5
+  _BufferSize: 4100
 --- !u!114 &326841719
 MonoBehaviour:
   m_ObjectHideFlags: 0
