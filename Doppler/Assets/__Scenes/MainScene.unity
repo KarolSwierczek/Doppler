@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClipLength: 0
-  _Clip: {fileID: 8300000, guid: 6cac00e9f91ffb441a95609d0a304e67, type: 3}
+  _Clip: {fileID: 8300000, guid: b51687fd7bf62b64fa9efdc0cd72959c, type: 3}
 --- !u!82 &194269514
 AudioSource:
   m_ObjectHideFlags: 0
@@ -268,21 +268,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Source: {fileID: 194269513}
-  _Logger: {fileID: 326841719}
   _MaxVelocity: 6
   gain: 0.5
   _BufferSize: 4100
---- !u!114 &326841719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 326841717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 278d528b4b463a845b91a4c5501d8199, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &326841720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,11 +282,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05ec5cf00ca181d45a42ba1870e148c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_WalkSpeed: 6
-  m_Acceleration: 5
-  m_StickToGroundForce: 0
-  m_GravityMultiplier: 0
-  m_MouseLook:
+  _MaxSpeed: 6
+  _Acceleration: 30
+  _Friction: 5
+  _Epsilon: 0.0001
+  _MouseLook:
     XSensitivity: 2
     YSensitivity: 2
     clampVerticalRotation: 1
@@ -307,6 +295,7 @@ MonoBehaviour:
     smooth: 0
     smoothTime: 5
     lockCursor: 1
+  _Speed: 0
 --- !u!81 &326841722
 AudioListener:
   m_ObjectHideFlags: 0
@@ -538,6 +527,14 @@ Prefab:
     - target: {fileID: 11400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
       propertyPath: m_Acceleration
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 14300000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8200000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 2}
