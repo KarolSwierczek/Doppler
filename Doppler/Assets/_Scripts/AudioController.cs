@@ -147,7 +147,8 @@ public class AudioController : MonoBehaviour {
         var distFromSource = sourceDirection2.magnitude;
 
         //sound pressure falloff
-        //todo: arbitrary number 10 and numofwallbouces and 
+        //todo: arbitrary number 10 and numofwallbouces 
+        //todo: move to settings class
         var falloff = Mathf.Clamp01(10f / distFromSource - 0.2f * numOfWallBounces);
         if (falloff < 0.05f){ return null; }
 

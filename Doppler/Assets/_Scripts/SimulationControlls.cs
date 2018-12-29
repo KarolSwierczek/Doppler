@@ -29,17 +29,24 @@ public class SimulationControlls : MonoBehaviour {
         {
             ToggleSource(2);
         }
-        /*
+        
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+            /*
             var paused = _PauseMenu.activeSelf;
             _AudioController.Pause(!paused);
             _PauseMenu.SetActive(!paused);
+            */
         }
-        */
+
     }
 
-    private void ToggleSource(int idx)
+        private void ToggleSource(int idx)
     {
         var active = _Sources[idx].activeSelf;
         _Sources[idx].SetActive(!active);
