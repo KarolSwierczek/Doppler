@@ -9,6 +9,9 @@ public class AudioController : MonoBehaviour {
     [SerializeField] private int _BufferSize = 4100;
     #endregion Inspector Variables
 
+    #region Debug Variables
+    #endregion Debug Variables
+
     #region Private Variables
     private Queue<float> _Buffer;
     private bool _CanRead = false;
@@ -18,6 +21,22 @@ public class AudioController : MonoBehaviour {
     private int _FirstSample;
     private float _PrevSampleVelocity;
     #endregion Private Variables
+
+    #region Constants
+    /*
+     * this array represents ratio of output sample value to the initial value based on the direction from source (0 - 350 deg)
+     * measurments are approximated for every 10 degrees
+     * original measurments were taken every 22,5 degrees
+     * source: http://www.canadianaudiologist.ca/measuring-directionality-of-modern-hearing-aids/
+    */
+    private readonly float[] _LeftEarDirectivity = new float[36]
+    {
+        0.56f, 0.50f, 0.45f, 0.40f, 0.40f, 0.45f, 0.45f, 0.50f, 0.56f,
+        0.56f, 0.56f, 0.50f, 0.45f, 0.45f, 0.40f, 0.40f, 0.45f, 0.50f,
+        0.56f, 0.63f, 0.71f, 0.79f, 0.89f, 1.00f, 1.00f, 1.00f, 1.00f,
+        1.00f, 1.00f, 1.00f, 1.00f, 1.00f, 0.89f, 0.79f, 0.71f, 0.63f
+    };
+    #endregion Constants
 
     #region Unity Methods
     private void Start()
@@ -42,13 +61,23 @@ public class AudioController : MonoBehaviour {
         var sampleTime = (int)(Time.fixedDeltaTime * _SampleRate);
         var timeSquared = sampleTime * sampleTime;
 
+        //vector from listener position to the source
+        var sourceDirection3 = _Source.transform.position - transform.position;
+        var sourceDirection2 = new Vector2(sourceDirection3.x, sourceDirection3.z);
+
         //current distance from the source
-        var distFromSource = Vector3.Distance(transform.position, _Source.transform.position);
+        var distFromSource = sourceDirection2.magnitude;
 
         //index of the sample from source clip, that corresponds to the current position
         var lastSample = _Source.ClipLength - (int)(distFromSource / _MaxVelocity * _SampleRate);
         var deltaSample = _FirstSample - lastSample;
         var absDeltaSample = Mathf.Abs(deltaSample);
+
+        //how the sound source is angled relative to the listener (0 to 350 deg, where 0 is forward)
+        var angle = Vector2.SignedAngle(sourceDirection2, new Vector2(transform.forward.x, transform.forward.z));     
+        angle = (angle + 360) % 360f; //-180 to 180 --> 0 to 360 deg
+        var angleIdx = (int)(angle / 10f); //rounding to 10 deg and converting to indexes
+
 
         if (absDeltaSample == 0)
         {
@@ -56,7 +85,10 @@ public class AudioController : MonoBehaviour {
 
             for (var n = 0; n < sampleTime; n++)
             {
-                _Buffer.Enqueue(lastSampleValue);
+                //left channel
+                _Buffer.Enqueue(lastSampleValue * _LeftEarDirectivity[angleIdx]);
+                //right channel
+                _Buffer.Enqueue(lastSampleValue * _LeftEarDirectivity[(_LeftEarDirectivity.Length - angleIdx)%36]);
             }
 
             _PrevSampleVelocity = 0f;
@@ -70,11 +102,6 @@ public class AudioController : MonoBehaviour {
             //acceleration is constant
             var sampleAcceleration = 2 * (deltaSample - _PrevSampleVelocity * sampleTime) / timeSquared;
 
-            //var normDist = sampleAcceleration*1000f;
-            //Debug.Log("A: " + sampleAcceleration*1000 + " V0: "+ _PrevSampleVelocity + " dS: " + deltaSample);
-
-
-
             //for each "output" sample
             for (var n = 0; n < sampleTime; n++)
             {
@@ -82,21 +109,22 @@ public class AudioController : MonoBehaviour {
                 //can be non-integer
                 var realSample = Mathf.Abs(n * (_PrevSampleVelocity + sampleAcceleration * n / 2));
                 var idx = (int)realSample;
-
+                float value;
 
                 if (idx > absDeltaSample - 2)
                 {
-                    _Buffer.Enqueue(fragment[absDeltaSample - 1]);
+                    value = fragment[absDeltaSample - 1];
                 }
                 else
                 {
                     var factor = realSample - idx;
                     //linear interpolation based on the two nearest samples from clip fragment
-                    var value = fragment[idx] * (1 - factor) + fragment[idx + 1] * factor;
-                    _Buffer.Enqueue(value);
+                    value = fragment[idx] * (1 - factor) + fragment[idx + 1] * factor;                 
                 }
-
-                //_Buffer.Enqueue(normDist);
+                //left channel
+                _Buffer.Enqueue(value * _LeftEarDirectivity[angleIdx]);
+                //right channel
+                _Buffer.Enqueue(value * _LeftEarDirectivity[_LeftEarDirectivity.Length - angleIdx -1]);
             }
 
             _PrevSampleVelocity += sampleTime * sampleAcceleration;
@@ -120,11 +148,19 @@ public class AudioController : MonoBehaviour {
         //for each "output" sample
         for (var n = 0; n < sampleTime; n++)
         {
-            var value = _Buffer.Dequeue();
+            //for two audio channels:
+            //left channel
+            data[n * channels] = gain * _Buffer.Dequeue();
+            //right channel
+            data[n * channels + 1] = gain * _Buffer.Dequeue();
+
+            
+            /* for i - channel mono sound
             for (var i = 0; i < channels; i++)
             {
                 data[n * channels + i] = gain * value;
             }
+            */
         }
     }
     

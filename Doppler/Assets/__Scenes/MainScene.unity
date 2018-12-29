@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClipLength: 0
-  _Clip: {fileID: 8300000, guid: b51687fd7bf62b64fa9efdc0cd72959c, type: 3}
+  _Clip: {fileID: 8300000, guid: 92ce62a6f51394f4fa2244893b892747, type: 3}
 --- !u!82 &194269514
 AudioSource:
   m_ObjectHideFlags: 0
@@ -271,6 +271,9 @@ MonoBehaviour:
   _MaxVelocity: 6
   gain: 0.5
   _BufferSize: 4100
+  _Angle: 0
+  _LRatio: 0
+  _RRatio: 0
 --- !u!114 &326841720
 MonoBehaviour:
   m_ObjectHideFlags: 0
