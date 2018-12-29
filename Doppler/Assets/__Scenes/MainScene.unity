@@ -271,9 +271,7 @@ MonoBehaviour:
   _MaxVelocity: 6
   gain: 0.5
   _BufferSize: 4100
-  _Angle: 0
-  _LRatio: 0
-  _RRatio: 0
+  _Controller: {fileID: 326841720}
 --- !u!114 &326841720
 MonoBehaviour:
   m_ObjectHideFlags: 0
