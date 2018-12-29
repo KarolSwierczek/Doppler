@@ -35,6 +35,19 @@ public class AudioController : MonoBehaviour {
     };
     #endregion Constants
 
+    /*
+    #region Public Methods
+    public void Pause(bool isPaused)
+    {
+        running = !isPaused;
+    }
+
+    public void SetBufferSize(int bufferSize){
+        _BufferSize = bufferSize;
+    }
+    #endregion Public Methods
+    */
+
     #region Unity Methods
     private void Start()
     {
@@ -74,7 +87,10 @@ public class AudioController : MonoBehaviour {
             //check if the source is enabled
             if (!_Sources[i].isActiveAndEnabled) { continue; }
 
-            var samples = GetSamples(i, sampleTime);
+            var samples = GetSamples(i, sampleTime, 0);
+            //check if the source is not too far away to be heard
+            if(samples == null) { continue;  }
+
             for(var j = 0; j < values.Length; j++)
             {
                 values[j] += samples[j];
@@ -117,7 +133,7 @@ public class AudioController : MonoBehaviour {
     /// <summary>
     /// Returns an array of sample values based on players velocity relative to the given source
     /// </summary>
-    private float[] GetSamples(int sourceIdx, int numOfSamples)
+    private float[] GetSamples(int sourceIdx, int numOfSamples, int numOfWallBounces)
     {
         var source = _Sources[sourceIdx];
         var result = new float[2*numOfSamples];
@@ -129,6 +145,11 @@ public class AudioController : MonoBehaviour {
 
         //current distance from the source
         var distFromSource = sourceDirection2.magnitude;
+
+        //sound pressure falloff
+        //todo: arbitrary number 10 and numofwallbouces and 
+        var falloff = Mathf.Clamp01(10f / distFromSource - 0.2f * numOfWallBounces);
+        if (falloff < 0.05f){ return null; }
 
         //index of the sample from source clip, that corresponds to the current position
         var lastSample = source.ClipLength - (int)(distFromSource / _MaxVelocity * _SampleRate);
@@ -151,9 +172,9 @@ public class AudioController : MonoBehaviour {
             for (var n = 0; n < numOfSamples; n++)
             {
                 //left channel
-                result[2*n] = lastSampleValue * _LeftEarPolarPattern[angleIdx];
+                result[2*n] = lastSampleValue * falloff * _LeftEarPolarPattern[angleIdx];
                 //right channel
-                result[2*n+1] = lastSampleValue * _LeftEarPolarPattern[(_LeftEarPolarPattern.Length - angleIdx) % 36];
+                result[2*n+1] = lastSampleValue * falloff * _LeftEarPolarPattern[(_LeftEarPolarPattern.Length - angleIdx) % _LeftEarPolarPattern.Length];
             }
         }
         else
@@ -185,9 +206,9 @@ public class AudioController : MonoBehaviour {
                     value = fragment[idx] * (1 - factor) + fragment[idx + 1] * factor;
                 }
                 //left channel
-                result[2*n] = value * _LeftEarPolarPattern[angleIdx];
+                result[2 * n] = value * falloff * _LeftEarPolarPattern[angleIdx];
                 //right channel
-                result[2*n+1] = value * _LeftEarPolarPattern[_LeftEarPolarPattern.Length - angleIdx - 1];
+                result[2 * n + 1] = value * falloff * _LeftEarPolarPattern[(_LeftEarPolarPattern.Length - angleIdx) % _LeftEarPolarPattern.Length];
             }
         }
         //update first sample index and distance from source

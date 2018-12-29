@@ -6,6 +6,9 @@ public class SimulationControlls : MonoBehaviour {
 
     [SerializeField] private List<GameObject> _Sources;
     [SerializeField] private List<Text> _Statuses;
+    [SerializeField] private Slider _BufferSizeSlider;
+    [SerializeField] private AudioController _AudioController;
+    [SerializeField] private GameObject _PauseMenu;
 
     private void Update()
     {
@@ -26,6 +29,14 @@ public class SimulationControlls : MonoBehaviour {
         {
             ToggleSource(2);
         }
+        /*
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            var paused = _PauseMenu.activeSelf;
+            _AudioController.Pause(!paused);
+            _PauseMenu.SetActive(!paused);
+        }
+        */
     }
 
     private void ToggleSource(int idx)
@@ -40,4 +51,10 @@ public class SimulationControlls : MonoBehaviour {
         text.text = isActive ? "Active" : "Inactive";
         text.color = isActive ? Color.green : Color.red;
     }
+    /*
+    public void UpdateBufferSize()
+    {
+        _AudioController.SetBufferSize((int)_BufferSizeSlider.value);
+    }
+    */
 }
