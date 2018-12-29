@@ -1,10 +1,5 @@
-
-using System;
-using Unity.Collections;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
-using UnityStandardAssets.Utility;
-using Random = UnityEngine.Random;
 
 namespace UnityStandardAssets.Characters.FirstPerson
 {
@@ -22,14 +17,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Camera _Camera;
         private CharacterController _CharacterController;
         private CollisionFlags _CollisionFlags;
-        private Vector3 _OriginalCameraPosition;
 
         // Use this for initialization
         private void Start()
         {
             _CharacterController = GetComponent<CharacterController>();
             _Camera = Camera.main;
-            _OriginalCameraPosition = _Camera.transform.localPosition;
 			_MouseLook.Init(transform , _Camera.transform);
         }
 

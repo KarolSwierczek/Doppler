@@ -51,6 +51,7 @@ public class AudioController : MonoBehaviour {
         {
             _FirstSamples.Add(GetCurrentSampleIndex(_Sources[i]));
             _PrevDistFromSource.Add(GetDistanceFromSource(_Sources[i]));
+            _Sources[i].gameObject.SetActive(i == 0);
         }
 
         running = true;
@@ -70,6 +71,9 @@ public class AudioController : MonoBehaviour {
         //summing up sample values from all sources
         for(var i = 0; i < _Sources.Count; i++)
         {
+            //check if the source is enabled
+            if (!_Sources[i].isActiveAndEnabled) { continue; }
+
             var samples = GetSamples(i, sampleTime);
             for(var j = 0; j < values.Length; j++)
             {
