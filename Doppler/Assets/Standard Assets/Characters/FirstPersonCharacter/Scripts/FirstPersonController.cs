@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 using UnityStandardAssets.CrossPlatformInput;
 
-namespace UnityStandardAssets.Characters.FirstPerson
+namespace WaveTerrain
 {
     [RequireComponent(typeof (CharacterController))]
     public class FirstPersonController : MonoBehaviour
