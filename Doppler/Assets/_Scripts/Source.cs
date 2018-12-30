@@ -8,12 +8,12 @@ namespace WaveTerrain
     /// </summary>
     public class Source : MonoBehaviour
     {
-        #region Inspector Variables
-        [SerializeField] private AudioClip _Clip;
-        #endregion Inspector Variables
+        #region Public Variables
+        public AudioClip Clip;
+        #endregion Public Variables
 
         #region Public Properties
-        public int ClipLength { get { return _Clip.samples; } }
+        public int ClipLength { get { return Clip.samples; } }
         #endregion Public Properties
 
         #region Private Variables
@@ -71,7 +71,7 @@ namespace WaveTerrain
         private void Start()
         {
             _ClipArray = new float[ClipLength];
-            _Clip.GetData(_ClipArray, 0);
+            Clip.GetData(_ClipArray, 0);
         }
         #endregion Unity Methods
     }

@@ -7,9 +7,7 @@ namespace WaveTerrain
     {
         #region Inspector Variables
         [SerializeField] private List<Source> _Sources;
-        [SerializeField] private float        _MaxVelocity;
-        [SerializeField] private float        _Gain               = 0.5F;
-        [SerializeField] private int          _BufferSize         = 4100;
+        [SerializeField] private Settings     _Settings;
         #endregion Inspector Variables
 
         #region Private Variables
@@ -107,8 +105,8 @@ namespace WaveTerrain
             }
 
             //check if the data from buffer can be read       
-            if (_Buffer.Count > _BufferSize) { _CanRead = true; }
-            else if (_Buffer.Count < _BufferSize / 2) { _CanRead = false; }
+            if (_Buffer.Count > _Settings.BufferSize) { _CanRead = true; }
+            else if (_Buffer.Count < _Settings.BufferSize / 2) { _CanRead = false; }
         }
 
 
@@ -125,9 +123,9 @@ namespace WaveTerrain
             {
                 //for two audio channels:
                 //left channel
-                data[n * channels] = _Gain * _Buffer.Dequeue();
+                data[n * channels] = _Settings.Gain * _Buffer.Dequeue();
                 //right channel
-                data[n * channels + 1] = _Gain * _Buffer.Dequeue();
+                data[n * channels + 1] = _Settings.Gain * _Buffer.Dequeue();
             }
         }
         #endregion Unity Methods
@@ -156,7 +154,7 @@ namespace WaveTerrain
             if (falloff < 0.05f) { return null; }
 
             //index of the sample from source clip, that corresponds to the current position
-            var lastSample = source.ClipLength - (int)(distFromSource / _MaxVelocity * _SampleRate);
+            var lastSample = source.ClipLength - (int)(distFromSource / _Settings.SoundSpeed * _SampleRate);
             var deltaSample = firstSample - lastSample;
             var absDeltaSample = Mathf.Abs(deltaSample);
 
@@ -187,7 +185,7 @@ namespace WaveTerrain
                 var fragment = source.GetClipFragment(firstSample, lastSample);
 
                 //velocity relative to max velocity
-                var relativeVelocity = (distFromSource - _PrevDistFromSource[sourceIdx]) / (Time.fixedDeltaTime * _MaxVelocity);
+                var relativeVelocity = (distFromSource - _PrevDistFromSource[sourceIdx]) / (Time.fixedDeltaTime * _Settings.SoundSpeed);
 
                 //for each "output" sample
                 for (var n = 0; n < numOfSamples; n++)
@@ -228,7 +226,7 @@ namespace WaveTerrain
         private int GetCurrentSampleIndex(Source source)
         {
             var distFromSource = Vector3.Distance(transform.position, source.transform.position);
-            return source.ClipLength - (int)(distFromSource / _MaxVelocity * _SampleRate);
+            return source.ClipLength - (int)(distFromSource / _Settings.SoundSpeed * _SampleRate);
         }
 
         /// <summary>

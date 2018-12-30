@@ -8,18 +8,15 @@ namespace WaveTerrain
     public class FirstPersonController : MonoBehaviour
     {
         #region Inspector Variables
-        [SerializeField] private float     _MaxSpeed;
-        [SerializeField] private float     _Acceleration;
-        [SerializeField] private float     _Friction;
-        [SerializeField] private float     _Epsilon;
-        [SerializeField] private MouseLook _MouseLook;
+        [SerializeField] private Settings _Settings;
         #endregion Inspector Variables
 
         #region Private Variables
-        private Vector2                    _Velocity = Vector2.zero;
+        private MouseLook                  _MouseLook = new MouseLook();       
         private Camera                     _Camera;
         private CharacterController        _CharacterController;
-        private CollisionFlags             _CollisionFlags;
+
+        private Vector2                    _Velocity = Vector2.zero;
         #endregion Private Variables
 
         #region Unity Methods
@@ -40,15 +37,15 @@ namespace WaveTerrain
             //get desired move direction vector
             var desiredMoveDir = GetInput();
             //current acceleration based on player input and friction
-            var acceleration = desiredMoveDir * _Acceleration - _Velocity * _Friction;
+            var acceleration = desiredMoveDir * _Settings.Acceleration - _Velocity * _Settings.Friction;
             //current velocity vector clamped, so that the speed does not exceed max speed
-            _Velocity = Vector2.ClampMagnitude( _Velocity + acceleration * Time.fixedDeltaTime, _MaxSpeed);
+            _Velocity = Vector2.ClampMagnitude( _Velocity + acceleration * Time.fixedDeltaTime, _Settings.MaxSpeed);
 
             //if the speed is smaller than epsilon, reset the velocity to zero
-            if(_Velocity.magnitude < _Epsilon) { _Velocity = Vector2.zero; }
+            if(_Velocity.magnitude < _Settings.SpeedCutoff) { _Velocity = Vector2.zero; }
 
             //move the character with the calculated velocity
-            _CollisionFlags = _CharacterController.Move(new Vector3(_Velocity.x, 0f, _Velocity.y) * Time.fixedDeltaTime);
+            _CharacterController.Move(new Vector3(_Velocity.x, 0f, _Velocity.y) * Time.fixedDeltaTime);
             _MouseLook.UpdateCursorLock();
         }
         #endregion Unity Methods
