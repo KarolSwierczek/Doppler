@@ -7,19 +7,19 @@ namespace WaveTerrain
     {
         #region Inspector Variables
         [SerializeField] private List<Source> _Sources;
-        [SerializeField] private float _MaxVelocity;
-        [SerializeField] private float gain = 0.5F;
-        [SerializeField] private int _BufferSize = 4100;
+        [SerializeField] private float        _MaxVelocity;
+        [SerializeField] private float        _Gain               = 0.5F;
+        [SerializeField] private int          _BufferSize         = 4100;
         #endregion Inspector Variables
 
         #region Private Variables
-        private Queue<float> _Buffer = new Queue<float>();
-        private bool _CanRead = false;
+        private Queue<float>                  _Buffer             = new Queue<float>();
+        private bool                          _CanRead            = false;
 
-        private bool running = false;
-        private int _SampleRate;
-        private List<int> _FirstSamples = new List<int>();
-        private List<float> _PrevDistFromSource = new List<float>();
+        private bool                          running             = false;
+        private int                           _SampleRate;
+        private List<int>                     _FirstSamples       = new List<int>();
+        private List<float>                   _PrevDistFromSource = new List<float>();
         #endregion Private Variables
 
         #region Constants
@@ -76,7 +76,7 @@ namespace WaveTerrain
         private void FixedUpdate()
         {
             //pause if the application is not running
-            if (!running) { return; }
+            if (!running || Time.timeScale == 0) { return; }
 
             //time since the last update mesaured in samples
             var sampleTime = (int)(Time.fixedDeltaTime * _SampleRate);
@@ -125,9 +125,9 @@ namespace WaveTerrain
             {
                 //for two audio channels:
                 //left channel
-                data[n * channels] = gain * _Buffer.Dequeue();
+                data[n * channels] = _Gain * _Buffer.Dequeue();
                 //right channel
-                data[n * channels + 1] = gain * _Buffer.Dequeue();
+                data[n * channels + 1] = _Gain * _Buffer.Dequeue();
             }
         }
         #endregion Unity Methods
