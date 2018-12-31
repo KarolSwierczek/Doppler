@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace WaveTerrain
 {
     /// <summary>
     /// This class stores and updates all simulation settings
     /// </summary>
-    //todo: ui controller class
     public class Settings : MonoBehaviour
     {
         #region Public Variables    

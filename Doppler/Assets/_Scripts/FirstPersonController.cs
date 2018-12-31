@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
 using UnityStandardAssets.CrossPlatformInput;
 
-namespace WaveTerrain
+namespace WaveTerrain.Gameplay
 {
     [RequireComponent(typeof (CharacterController))]
     public class FirstPersonController : MonoBehaviour
@@ -12,12 +12,22 @@ namespace WaveTerrain
         #endregion Inspector Variables
 
         #region Private Variables
-        private MouseLook                  _MouseLook = new MouseLook();       
-        private Camera                     _Camera;
-        private CharacterController        _CharacterController;
+        private MouseLook                 _MouseLook = new MouseLook();       
+        private Camera                    _Camera;
+        private CharacterController       _CharacterController;
 
-        private Vector2                    _Velocity = Vector2.zero;
+        private Vector2                   _Velocity = Vector2.zero;
+        private bool                      _Running = false;
         #endregion Private Variables
+
+        #region Public Methods
+        public void Pause(bool pause)
+        {
+            _Running = !pause;
+            _MouseLook.SetCursorLock(!pause);
+            _MouseLook.UpdateCursorLock();
+        }
+        #endregion PublicMethods
 
         #region Unity Methods
         private void Start()
@@ -25,15 +35,19 @@ namespace WaveTerrain
             _CharacterController = GetComponent<CharacterController>();
             _Camera = Camera.main;
 			_MouseLook.Init(transform , _Camera.transform);
+            _Running = true;
         }
 
         private void Update()
         {
+            if (!_Running) { return; }
             RotateView();
         }
 
         private void FixedUpdate()
         {
+            if (!_Running) { return; }
+
             //get desired move direction vector
             var desiredMoveDir = GetInput();
             //current acceleration based on player input and friction

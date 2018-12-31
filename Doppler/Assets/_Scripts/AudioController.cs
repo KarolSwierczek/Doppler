@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace WaveTerrain
+namespace WaveTerrain.Audio
 {
     public class AudioController : MonoBehaviour
     {
@@ -14,7 +14,7 @@ namespace WaveTerrain
         private Queue<float>                  _Buffer             = new Queue<float>();
         private bool                          _CanRead            = false;
 
-        private bool                          running             = false;
+        private bool                          _Running             = false;
         private int                           _SampleRate;
         private List<int>                     _FirstSamples       = new List<int>();
         private List<float>                   _PrevDistFromSource = new List<float>();
@@ -36,18 +36,12 @@ namespace WaveTerrain
         };
         #endregion Constants
 
-        /*
         #region Public Methods
-        public void Pause(bool isPaused)
+        public void Pause(bool pause)
         {
-            running = !isPaused;
+            _Running = !pause;
         }
-
-        public void SetBufferSize(int bufferSize){
-            _BufferSize = bufferSize;
-        }
-        #endregion Public Methods
-        */
+        #endregion PublicMethods
 
         #region Unity Methods
         private void Start()
@@ -68,13 +62,13 @@ namespace WaveTerrain
                 _Sources[i].gameObject.SetActive(i == 0);
             }
 
-            running = true;
+            _Running = true;
         }
 
         private void FixedUpdate()
         {
             //pause if the application is not running
-            if (!running || Time.timeScale == 0) { return; }
+            if (!_Running) { return; }
 
             //time since the last update mesaured in samples
             var sampleTime = (int)(Time.fixedDeltaTime * _SampleRate);
@@ -113,19 +107,22 @@ namespace WaveTerrain
         private void OnAudioFilterRead(float[] data, int channels)
         {
             //pause if the application is not running
-            if (!running || !_CanRead) { return; }
+            if (!_Running || !_CanRead) { return; }
 
             //time since the last update mesaured in samples
             var sampleTime = data.Length / channels;
 
             //for each "output" sample
-            for (var n = 0; n < sampleTime; n++)
+            if (_Running)
             {
-                //for two audio channels:
-                //left channel
-                data[n * channels] = _Settings.Gain * _Buffer.Dequeue();
-                //right channel
-                data[n * channels + 1] = _Settings.Gain * _Buffer.Dequeue();
+                for (var n = 0; n < sampleTime; n++)
+                {
+                    //for two audio channels:
+                    //left channel
+                    data[n * channels] = _Settings.Gain * _Buffer.Dequeue();
+                    //right channel
+                    data[n * channels + 1] = _Settings.Gain * _Buffer.Dequeue();
+                }
             }
         }
         #endregion Unity Methods

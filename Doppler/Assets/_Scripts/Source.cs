@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace WaveTerrain
+namespace WaveTerrain.Audio
 {
     /// <summary>
     /// this class represents a sound source 
