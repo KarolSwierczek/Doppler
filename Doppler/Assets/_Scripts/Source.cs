@@ -10,6 +10,7 @@ namespace WaveTerrain.Audio
     {
         #region Public Variables
         public AudioClip Clip;
+        public int NumOfBounces;
         #endregion Public Variables
 
         #region Public Properties

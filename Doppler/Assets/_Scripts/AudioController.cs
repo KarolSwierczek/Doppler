@@ -82,7 +82,7 @@ namespace WaveTerrain.Audio
                 //check if the source is enabled
                 if (!_Sources[i].isActiveAndEnabled) { continue; }
 
-                var samples = GetSamples(i, sampleTime, 0);
+                var samples = GetSamples(i, sampleTime, _Sources[i].NumOfBounces);
                 //check if the source is not too far away to be heard
                 if (samples == null) { continue; }
 
@@ -148,7 +148,7 @@ namespace WaveTerrain.Audio
             //todo: arbitrary number 10 and numofwallbouces 
             //todo: move to settings class
             var falloff = Mathf.Clamp01(10f / distFromSource - 0.2f * numOfWallBounces);
-            if (falloff < 0.05f) { return null; }
+            if (falloff < 0.01f) { return null; }
 
             //index of the sample from source clip, that corresponds to the current position
             var lastSample = source.ClipLength - (int)(distFromSource / _Settings.SoundSpeed * _SampleRate);

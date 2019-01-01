@@ -99,9 +99,9 @@ namespace WaveTerrain.UI
         #region Unity Methods
         void Update()
         {
-            if (_Sources.Count < 3)
+            if (_Sources.Count < 7)
             {
-                Debug.LogError("there should be 3 sources");
+                Debug.LogError("there should be 7 sources");
                 return;
             }
             if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -116,6 +116,13 @@ namespace WaveTerrain.UI
             {
                 ToggleSource(2);
             }
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                ToggleSource(3);
+                ToggleSource(4, false);
+                ToggleSource(5, false);
+                ToggleSource(6, false);
+            }
         }
         #endregion Unity Methods
 
@@ -124,11 +131,11 @@ namespace WaveTerrain.UI
         /// toggles the source active state
         /// </summary>
         /// <param name="idx">index of the source in _Sources list</param>
-        private void ToggleSource(int idx)
+        private void ToggleSource(int idx, bool setStatus = true)
         {
             var active = _Sources[idx].activeSelf;
             _Sources[idx].SetActive(!active);
-            SetStatus(_Statuses[idx], !active);
+            if (setStatus) { SetStatus(_Statuses[idx], !active); }
         }
 
         /// <summary>
