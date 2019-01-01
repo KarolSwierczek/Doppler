@@ -191,7 +191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 23545575}
   m_Layer: 0
-  m_Name: Reflextions
+  m_Name: Reflections
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -318,7 +318,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Clip: {fileID: 8300000, guid: 92ce62a6f51394f4fa2244893b892747, type: 3}
-  NumOfBounces: 0
 --- !u!82 &37133975
 AudioSource:
   m_ObjectHideFlags: 0
@@ -878,7 +877,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Clip: {fileID: 8300000, guid: 92ce62a6f51394f4fa2244893b892747, type: 3}
-  NumOfBounces: 0
 --- !u!82 &194269514
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1799,7 +1797,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Clip: {fileID: 8300000, guid: 92ce62a6f51394f4fa2244893b892747, type: 3}
-  NumOfBounces: 0
 --- !u!82 &320624409
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2103,8 +2100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ef2dfccb0a1324abbd338458cf95b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clip: {fileID: 8300000, guid: 92ce62a6f51394f4fa2244893b892747, type: 3}
-  NumOfBounces: 1
+  Clip: {fileID: 8300000, guid: 28151139d9e732a4fa6b558dec93bbc7, type: 3}
 --- !u!1 &359888724
 GameObject:
   m_ObjectHideFlags: 0
@@ -4285,8 +4281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ef2dfccb0a1324abbd338458cf95b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clip: {fileID: 8300000, guid: 92ce62a6f51394f4fa2244893b892747, type: 3}
-  NumOfBounces: 1
+  Clip: {fileID: 8300000, guid: 28151139d9e732a4fa6b558dec93bbc7, type: 3}
 --- !u!1 &853689590
 GameObject:
   m_ObjectHideFlags: 0
@@ -6509,8 +6504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ef2dfccb0a1324abbd338458cf95b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clip: {fileID: 8300000, guid: 92ce62a6f51394f4fa2244893b892747, type: 3}
-  NumOfBounces: 1
+  Clip: {fileID: 8300000, guid: 28151139d9e732a4fa6b558dec93bbc7, type: 3}
 --- !u!1 &1332457574
 GameObject:
   m_ObjectHideFlags: 0
@@ -7127,8 +7121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ef2dfccb0a1324abbd338458cf95b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clip: {fileID: 8300000, guid: 92ce62a6f51394f4fa2244893b892747, type: 3}
-  NumOfBounces: 1
+  Clip: {fileID: 8300000, guid: 28151139d9e732a4fa6b558dec93bbc7, type: 3}
 --- !u!1 &1473614718
 GameObject:
   m_ObjectHideFlags: 0

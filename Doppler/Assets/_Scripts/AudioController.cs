@@ -82,7 +82,7 @@ namespace WaveTerrain.Audio
                 //check if the source is enabled
                 if (!_Sources[i].isActiveAndEnabled) { continue; }
 
-                var samples = GetSamples(i, sampleTime, _Sources[i].NumOfBounces);
+                var samples = GetSamples(i, sampleTime);
                 //check if the source is not too far away to be heard
                 if (samples == null) { continue; }
 
@@ -131,7 +131,7 @@ namespace WaveTerrain.Audio
         /// <summary>
         /// Returns an array of sample values based on players velocity relative to the given source
         /// </summary>
-        private float[] GetSamples(int sourceIdx, int numOfSamples, int numOfWallBounces)
+        private float[] GetSamples(int sourceIdx, int numOfSamples)
         {
             var source = _Sources[sourceIdx];
             var result = new float[2 * numOfSamples];
@@ -145,9 +145,8 @@ namespace WaveTerrain.Audio
             var distFromSource = sourceDirection2.magnitude;
 
             //sound pressure falloff
-            //todo: arbitrary number 10 and numofwallbouces 
             //todo: move to settings class
-            var falloff = Mathf.Clamp01(10f / distFromSource - 0.2f * numOfWallBounces);
+            var falloff = Mathf.Clamp01(10f / distFromSource);
             if (falloff < 0.01f) { return null; }
 
             //index of the sample from source clip, that corresponds to the current position
